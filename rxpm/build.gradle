@@ -57,6 +57,8 @@ dependencies {
         exclude module: 'support-core-ui'
     }
 
+    implementation rootProject.ext.archViewModel
+
     // Persistent PM
     implementation rootProject.ext.outlast
 

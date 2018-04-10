@@ -1,5 +1,6 @@
 package me.dmdev.rxpm
 
+import android.arch.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -13,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference
 /**
  * Parent class for any Presentation Model.
  */
-abstract class PresentationModel {
+abstract class PresentationModel: ViewModel() {
 
     enum class Lifecycle {
         CREATED, BINDED, UNBINDED, DESTROYED
