@@ -3,7 +3,6 @@ package me.dmdev.rxpm.sample.ui.confirmation
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.view.enabled
 import com.jakewharton.rxbinding2.widget.editorActions
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.screen_code_confirmation.*
@@ -27,17 +26,18 @@ class CodeConfirmationScreen : Screen<CodeConfirmationPm>() {
     override val screenLayout = R.layout.screen_code_confirmation
 
     override fun providePresentationModel()
-            = CodeConfirmationPm(arguments.getString(ARG_PHONE),
+            = CodeConfirmationPm(arguments!!.getString(ARG_PHONE),
                                  App.component.resourceProvider,
                                  App.component.authModel)
 
     override fun onBindPresentationModel(pm: CodeConfirmationPm) {
         super.onBindPresentationModel(pm)
-        pm.code bindTo codeEditLayout
-        pm.inProgress.observable bindTo progressConsumer
-        pm.doneButtonEnabled.observable bindTo doneButton.enabled()
 
-        navButton.clicks().bindTo(pm.backAction.consumer)
+        pm.code bindTo codeEditLayout
+        pm.inProgress bindTo progressConsumer
+        pm.doneButtonEnabled bindTo doneButton::setEnabled
+
+        navButton.clicks() bindTo pm.backAction
 
         Observable
                 .merge(
@@ -47,7 +47,7 @@ class CodeConfirmationScreen : Screen<CodeConfirmationPm>() {
                                 .filter { it == EditorInfo.IME_ACTION_SEND }
                                 .map { Unit }
                 )
-                .bindTo(pm.doneAction.consumer)
+                .bindTo(pm.doneAction)
 
     }
 
